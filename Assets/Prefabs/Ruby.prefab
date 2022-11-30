@@ -103,18 +103,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   timeInvincible: 2
+  timeBoosting: 4
   projectilePrefab: {fileID: 2776926198193011187, guid: a4956766cfb129641a12a39cd3471a78, type: 3}
   currentAmmo: 4
   ammoText: {fileID: 0}
   speed: 5
   throwSound: {fileID: 8300000, guid: 5dcc58b0b5f03b046a38211dc0962a8e, type: 3}
   hitSound: {fileID: 8300000, guid: 19cb85f0a8673c744b0148bf20c4389f, type: 3}
+  tickingSound: {fileID: 8300000, guid: db04c43349587fa448019db400042b2a, type: 3}
   backgroundManager: {fileID: 0}
-  healthEffect: {fileID: 4103549735109868291, guid: bd72df93267ab9142838aa50455a8f1b, type: 3}
   damageEffect: {fileID: 2248391678185625306, guid: a411b852664944445adec67445d4a0b6, type: 3}
   fixedText: {fileID: 0}
   WinTextObject: {fileID: 0}
   LoseTextObject: {fileID: 0}
+  timerUI: {fileID: 0}
+  mainTimer: 60
+  TimerObject: {fileID: 0}
 --- !u!50 &8713108652445233725
 Rigidbody2D:
   serializedVersion: 4

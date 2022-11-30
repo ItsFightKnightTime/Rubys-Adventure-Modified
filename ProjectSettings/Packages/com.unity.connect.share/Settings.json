@@ -21,7 +21,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"C:/Unity Projects/Tutorial-3-Ruby-Adventure/WebGL Builds/Challenge 3;C:/Unity Projects/Tutorial-3-Ruby-Adventure/WebGL Builds/Tutorial 3;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Unity Projects/Tutorial-3-Ruby-Adventure/WebGL Builds/Final;C:/Unity Projects/Tutorial-3-Ruby-Adventure/WebGL Builds/Challenge 3;C:/Unity Projects/Tutorial-3-Ruby-Adventure/WebGL Builds/Tutorial 3;;;;;;;\"}"
             }
         ]
     }

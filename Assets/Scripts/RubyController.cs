@@ -16,6 +16,11 @@ public class RubyController : MonoBehaviour
     bool isInvincible;
     float invincibleTimer;
 
+    // Speed Boost Timer
+    public float timeBoosting = 4.0f;
+    float speedBoostTimer;
+    bool isBoosting;
+
     // Cog Object and Ammo Variables
     public GameObject projectilePrefab;
     public int ammo { get { return currentAmmo; }}
@@ -39,6 +44,7 @@ public class RubyController : MonoBehaviour
 
     public AudioClip throwSound;
     public AudioClip hitSound;
+    public AudioClip tickingSound;
     public AudioSource backgroundManager;
 
 
@@ -55,6 +61,18 @@ public class RubyController : MonoBehaviour
     bool gameOver;
     bool winGame;
     public static int level = 1; // Level manager
+
+    // Timer Variables
+    [SerializeField] private TextMeshProUGUI timerUI; // Attach TMP object to this slot
+    [SerializeField] private float mainTimer; // Change this value to your liking in Unity
+
+    private float timer;
+    private bool canCount = false;
+    private bool doOnce = false;
+    private bool hasPressedKey = false;
+    private bool hasMoved = false;
+
+    public GameObject TimerObject; // This is your Timer text in the Canvas
 
 
     // Start is called before the first frame update
@@ -88,6 +106,10 @@ public class RubyController : MonoBehaviour
         LoseTextObject.SetActive(false);
         gameOver = false;
         winGame = false;
+
+        // Timer
+        timer = mainTimer;
+        TimerObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -104,6 +126,8 @@ public class RubyController : MonoBehaviour
         {
             lookDirection.Set(move.x, move.y);
             lookDirection.Normalize();
+
+            hasMoved = true; // If player moves, timer will not be able to be activated.
         }
         
         animator.SetFloat("Look X", lookDirection.x);
@@ -116,6 +140,19 @@ public class RubyController : MonoBehaviour
             invincibleTimer -= Time.deltaTime;
             if (invincibleTimer < 0)
                 isInvincible = false;
+        }
+
+        // Speed Boost Timer
+        if (isBoosting == true)
+        {
+            speedBoostTimer -= Time.deltaTime; // Once speed boost activates, it counts down
+            speed = 8;
+        
+            if (speedBoostTimer < 0)
+            {
+                isBoosting = false;
+                speed = 5; 
+            }
         }
 
         // Cog Bullet is launched - Ammo in UI is reduced
@@ -173,6 +210,59 @@ public class RubyController : MonoBehaviour
                 SceneManager.LoadScene("Level 1");
                 level = 1;
             }
+        }
+
+        // Timer Main Code
+        // Press this key to activate timer
+        if (hasMoved == false)
+        {
+            if (hasPressedKey == false)
+            {
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    timer = mainTimer;
+                    canCount = true;
+                    doOnce = false;
+                    TimerObject.SetActive(true);
+
+                    // Ticking Sound Starts
+                    PlaySound(tickingSound);
+            
+                    hasPressedKey = true;
+                }
+            }
+        }
+
+        // Timer functionality
+        if (timer >= 0.0f && canCount)
+        {
+            timer -= Time.deltaTime;
+            timerUI.text = "Time: " + timer.ToString("F");
+        }
+
+        else if (timer <= 0.0f && !doOnce)
+        {
+            canCount = false;
+            doOnce = true;
+            timerUI.text = "Time: " + timer.ToString("0.00");
+
+            // Lose State
+            LoseTextObject.SetActive(true);
+
+            transform.position = new Vector3(-5f, 0f, -100f);
+            speed = 0;
+            Destroy(gameObject.GetComponent<SpriteRenderer>());
+
+            gameOver = true;
+
+            // BackgroundMusicManager is turned off
+            backgroundManager.Stop();
+
+            // Calls sound script and plays lose sound
+            SoundManagerScript.PlaySound("GameOver");
+
+            // Ticking Sound Stops
+            StopSound(tickingSound);
         }
     }
 
@@ -266,6 +356,11 @@ public class RubyController : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
+    public void StopSound(AudioClip clip)
+    {
+        audioSource.Stop();
+    }
+
     public void FixedRobots(int amount)
     {
         scoreFixed += amount;
@@ -277,6 +372,14 @@ public class RubyController : MonoBehaviour
         if (scoreFixed == 4 && level == 1)
         {
             WinTextObject.SetActive(true);
+
+            // Disables time attack on level
+            canCount = false;
+            doOnce = true;
+            TimerObject.SetActive(false);
+
+            // Ticking Sound Stops
+            StopSound(tickingSound);
         }
 
         // Win Text Appears ONLY if on Level 2
@@ -296,7 +399,24 @@ public class RubyController : MonoBehaviour
 
             // Calls sound script and plays win sound
             SoundManagerScript.PlaySound("FFWin");
+
+            // Disables time attack on level
+            canCount = false;
+            doOnce = true;
+            TimerObject.SetActive(false);
+
+            // Ticking Sound Stops
+            StopSound(tickingSound);
         }
         
+    }
+
+    public void SpeedBoost(int amount)
+    {
+        if (amount > 0)
+        {
+            speedBoostTimer = timeBoosting;
+            isBoosting = true;
+        }
     }
 }
