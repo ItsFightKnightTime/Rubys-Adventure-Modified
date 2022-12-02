@@ -300,6 +300,10 @@ public class RubyController : MonoBehaviour
         if (currentHealth == 1)
         {
             LoseTextObject.SetActive(true);
+            if (level == 1)
+            {
+                WinTextObject.SetActive(false);
+            }
 
             transform.position = new Vector3(-5f, 0f, -100f);
             speed = 0;
