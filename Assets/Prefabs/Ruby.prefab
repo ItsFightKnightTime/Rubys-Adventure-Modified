@@ -117,7 +117,7 @@ MonoBehaviour:
   WinTextObject: {fileID: 0}
   LoseTextObject: {fileID: 0}
   timerUI: {fileID: 0}
-  mainTimer: 60
+  mainTimer: 30
   TimerObject: {fileID: 0}
 --- !u!50 &8713108652445233725
 Rigidbody2D:

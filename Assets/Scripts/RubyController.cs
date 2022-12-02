@@ -312,6 +312,13 @@ public class RubyController : MonoBehaviour
 
             // Calls sound script and plays lose sound
             SoundManagerScript.PlaySound("GameOver");
+
+            // Disables time attack on level
+            canCount = false;
+            doOnce = true;
+
+            // Ticking Sound Stops
+            StopSound(tickingSound);
         }
 
         // Health math code
@@ -376,7 +383,6 @@ public class RubyController : MonoBehaviour
             // Disables time attack on level
             canCount = false;
             doOnce = true;
-            TimerObject.SetActive(false);
 
             // Ticking Sound Stops
             StopSound(tickingSound);
@@ -403,7 +409,6 @@ public class RubyController : MonoBehaviour
             // Disables time attack on level
             canCount = false;
             doOnce = true;
-            TimerObject.SetActive(false);
 
             // Ticking Sound Stops
             StopSound(tickingSound);
